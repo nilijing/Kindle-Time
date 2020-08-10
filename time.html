@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>　</title>
+
+    <style>
+        body {
+          color: #000000;
+          background-color: #ffffff;
+        }
+
+        .page {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+        }
+
+        .time_container,
+        .date_container {
+          width: 100%;
+          margin: auto;
+          text-align: center;
+        }
+
+        .time_container {
+          top: 0;
+          height: 55%;
+        }
+
+        .date_container {
+
+        }
+        .weather_container {
+
+        }
+
+        .time {
+          padding-top: 120px;
+          font-size: 16rem;
+        }
+
+        .date {
+          padding-top: 40px;
+          font-size: 6rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+      <div class="time_container">
+          <div class="time" id="time">11:27</div>
+      </div>
+      <div class="weather_container">
+        <div id="weaTemp"></div>
+      </div>
+      <div class="date_container">
+          <div class="date" id="date">01/10/2020</div>
+          <div class="date" id="week">MONDAY</div>
+      </div>
+    </div>
+
+
+    <script>
+      function update() {
+        var date = new Date()
+        var utc8DiffMinutes = date.getTimezoneOffset() - 240
+        date.setMinutes(date.getMinutes() + utc8DiffMinutes)
+
+        var timeString = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2)
+        var dateString = '0'+(date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() 
+        var weekList = [ 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY','SUNDAY']
+        var weekString = weekList[date.getDay()-1]
+
+        document.getElementById("time").innerHTML = timeString
+        document.getElementById("date").innerHTML = dateString
+        document.getElementById("week").innerHTML = weekString
+      }
+      update()
+      setInterval("update()", 60 * 1000)
+      getWeather()
+
+
+    function getWea() {
+        var xhr = createXHR();
+        xhr.open(
+          "GET",
+          "https://tianqiapi.com/free/day?appid=48373524&appsecret=5iHwLsS8",
+          true
+        );
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4) {
+               var weaTemp =
+                 '<div class="tempNum">' +
+                 data.tem +
+                 '<div class="symbol">&#8451;</div>
+                 </div>' ;
+               document.getElementById("weaTemp").innerHTML = weaTemp;
+            }
+        };
+        xhr.send(null);
+      }
+
+      getWea();
+      setInterval("getWea()", 60 * 1000 );
+
+
+    </script>
+</body>
+</html>
